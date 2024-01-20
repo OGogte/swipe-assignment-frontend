@@ -19,7 +19,12 @@ const invoicesSlice = createSlice({
       }
     },
     bulkEdit: (state, action) => {
-      return action.payload;
+      return state.map((invoice) => {
+        const updatedInvoice = action.payload.find(
+          (editedInvoice) => editedInvoice.id === invoice.id
+        );
+        return updatedInvoice ? updatedInvoice : invoice;
+      });
     },
   },
 });

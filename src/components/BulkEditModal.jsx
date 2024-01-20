@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Table from "react-bootstrap/Table";
 import Modal from "react-bootstrap/Modal";
@@ -10,8 +10,13 @@ export default function BulkEditModal(props) {
         return { ...invoice, checked: false };
     })
     const [selectedInvoices, setSelectedInvoices] = useState(checkedInvoiceList);
-
+    const [isMasterChecked, setIsMasterChecked] = useState(false);
+    useEffect(() => {
+        const allChecked = selectedInvoices.every((invoice) => invoice.checked);
+        setIsMasterChecked(allChecked);
+    }, [selectedInvoices]);
     const handleCheckboxMaster = (checked) => {
+        setIsMasterChecked(checked);
         setSelectedInvoices(
             selectedInvoices.map((invoice) => {
                 invoice.checked = checked;
@@ -50,6 +55,7 @@ export default function BulkEditModal(props) {
                             <th className="px-2"><input
                                 type="checkbox"
                                 className="form-check-input"
+                                checked={isMasterChecked}
                                 onChange={(e) => handleCheckboxMaster(e.target.checked)}
                             /></th>
                             <th>Invoice No.</th>
@@ -83,7 +89,7 @@ const InvoiceRow = ({ invoice, handleCheckbox }) => {
                     className="form-check-input"
                     checked={invoice.checked}
                     id={invoice.id}
-                    onChange={(e) => handleCheckbox(invoice.id,e.target.checked)}
+                    onChange={(e) => handleCheckbox(invoice.id, e.target.checked)}
 
                 />
             </td>

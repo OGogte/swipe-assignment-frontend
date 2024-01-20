@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
 const ItemsEditModal = ({ open, onClose, onSaveItem, items, handleItems, handleDeleteItem }) => {
+    const canDeleteItem = items.length > 1;
     return (
         <Modal show={open} onHide={onClose}>
             <Modal.Header closeButton>
@@ -60,13 +61,15 @@ const ItemsEditModal = ({ open, onClose, onSaveItem, items, handleItems, handleD
                             }
                             required
                         />
-                        <Button
-                            variant="danger"
-                            className=" text-center border border-dark"
-                            onClick={() => handleDeleteItem(id)}
-                        >
-                            Delete
-                        </Button>
+                        {canDeleteItem && (
+                            <Button
+                                variant="danger"
+                                className=" text-center border border-dark"
+                                onClick={() => handleDeleteItem(id)}
+                            >
+                                Delete
+                            </Button>
+                        )}
                     </div>
                 ))}
             </Modal.Body>
