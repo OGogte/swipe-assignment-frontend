@@ -8,12 +8,14 @@ import { useNavigate } from "react-router-dom";
 import { useInvoiceListData } from "../redux/hooks";
 import { useDispatch } from "react-redux";
 import { deleteInvoice } from "../redux/invoicesSlice";
+import BulkEditModal from "../components/BulkEditModal";
 
 const InvoiceList = () => {
   const { invoiceList, getOneInvoice } = useInvoiceListData();
   const isListEmpty = invoiceList.length === 0;
   const [copyId, setCopyId] = useState("");
   const navigate = useNavigate();
+  const [open,setOpen] = useState(false);
   const handleCopyClick = () => {
     const invoice = getOneInvoice(copyId);
     if (!invoice) {
@@ -22,7 +24,8 @@ const InvoiceList = () => {
       navigate(`/create/${copyId}`);
     }
   };
-
+const handleCLose = () => setOpen(false);
+const handleOpen = () => setOpen(true);
   return (
     <Row>
       <Col className="mx-auto" xs={12} md={8} lg={9}>
@@ -42,7 +45,8 @@ const InvoiceList = () => {
                 <Link to="/create">
                   <Button variant="primary mb-2 mb-md-4">Create Invoice</Button>
                 </Link>
-
+                <Button variant="primary mb-2 mb-md-4" onClick={handleOpen}>Bulk Edit Invoice</Button>
+                <BulkEditModal open={open} handleCLose={handleCLose} invoiceList={invoiceList} />
                 <div className="d-flex gap-2">
                   <Button variant="dark mb-2 mb-md-4" onClick={handleCopyClick}>
                     Copy Invoice
