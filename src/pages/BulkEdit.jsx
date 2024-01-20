@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom'
 import { bulkEdit } from '../redux/invoicesSlice';
-import { Row, Col, Card, Table, Form, Button, Modal } from 'react-bootstrap';
+import { Row, Col, Card, Table, Form, Button } from 'react-bootstrap';
 import { BiSolidPencil } from 'react-icons/bi';
+import ItemsEditModal from '../components/ItemsEditModal';
 export default function BulkEdit() {
     const location = useLocation();
     const navigate = useNavigate();
@@ -207,87 +208,14 @@ export default function BulkEdit() {
                                                     }}>
                                                     <BiSolidPencil />
                                                 </Button>
-                                                <Modal show={open}>
-                                                    <Modal.Header
-                                                        closeButton
-                                                        onClick={() => {
-                                                            setOpen(false);
-                                                        }}
-                                                    >
-                                                        <Modal.Title>Items</Modal.Title>
-                                                    </Modal.Header>
-
-                                                    <Modal.Body>
-                                                        <div className=" d-flex gap-2 align-items-center justify-content-between ">
-                                                            <h5> Name</h5>
-                                                            <h5>Description</h5>
-                                                            <h5>Quantity</h5>
-                                                            <h5>Price</h5>
-                                                            <h5>Actions</h5>
-                                                        </div>
-                                                        {items.map((item, id) => (
-                                                            <div className=" d-flex gap-2 align-items-center justify-content-between "
-                                                                key={id}
-                                                            >
-                                                                <Form.Control
-                                                                    className=" text-center bg-white border border-dark"
-                                                                    type="text"
-                                                                    value={item.itemName}
-                                                                    name="itemName"
-                                                                    onChange={(e) =>
-                                                                        handleItems(id, e.target.name, e.target.value)
-                                                                    }
-                                                                    required
-                                                                />
-                                                                <Form.Control
-                                                                    className=" text-center bg-white border border-dark"
-                                                                    type="text"
-                                                                    value={item.itemDescription}
-                                                                    name="itemDescription"
-                                                                    onChange={(e) =>
-                                                                        handleItems(id, e.target.name, e.target.value)
-                                                                    }
-                                                                    required
-                                                                />
-                                                                <Form.Control
-                                                                    className=" text-center bg-white border border-dark"
-                                                                    type="number"
-                                                                    value={item.itemQuantity}
-                                                                    name="itemQuantity"
-                                                                    onChange={(e) =>
-                                                                        handleItems(id, e.target.name, e.target.value)
-                                                                    }
-                                                                    required
-                                                                />
-                                                                <Form.Control
-                                                                    className=" text-center bg-white border border-dark"
-                                                                    type="number"
-                                                                    value={item.itemPrice}
-                                                                    name="itemPrice"
-                                                                    onChange={(e) =>
-                                                                        handleItems(id, e.target.name, e.target.value)
-                                                                    }
-                                                                    required
-                                                                />
-                                                                <Button
-                                                                    variant="danger"
-                                                                    className=" text-center border border-dark"
-                                                                    onClick={() => handleDeleteItem(id)}
-                                                                >
-                                                                    Delete
-                                                                </Button>
-                                                            </div>
-                                                        ))}
-                                                    </Modal.Body>
-                                                    <Modal.Footer>
-                                                        <Button
-                                                            variant="primary"
-                                                            onClick={() => handleSaveItem(invoice.id)}
-                                                        >
-                                                            Save
-                                                        </Button>
-                                                    </Modal.Footer>
-                                                </Modal>
+                                                <ItemsEditModal
+                                                open={open}
+                                                onClose={() => setOpen(false)}
+                                                onSaveItem={() => handleSaveItem(invoice.id)}
+                                                items={items}
+                                                handleItems={handleItems}
+                                                handleDeleteItem={handleDeleteItem}
+                                              />
                                             </td>
                                             <td>
                                                 <Form.Control
